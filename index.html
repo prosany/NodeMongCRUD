@@ -5,16 +5,58 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NodeMongo CRUD</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        input {
+            background: #fff;
+            border: 1px solid #d8d8d8;
+            height: 37px;
+            border-radius: 6px;
+            padding: 10px;
+        }
+        input:focus {
+            border: 1px solid #d8d8d8;
+            outline: 0;
+        }
+        button {
+            background: #064c92;
+            border: 1px solid #064c92;
+            border-radius: 6px;
+            padding: 10px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .addData {
+            width: 100%;
+            margin: 10px 0;
+            text-align: center;
+        }
+        p {
+           margin: 10px;
+        }
+
+    </style>
 </head>
 <body>
-    <h1>Load Successful</h1>
-    <h2>Add Product to Database</h2>
-    <form action="/addProduct" method="post">
-        <input type="text" name="name" placeholder="Product Name">
-        <input type="text" name="price" placeholder="Product Price">
-        <input type="text" name="quantity" placeholder="Product Quantity">
-        <button type="submit">Add Product</button>
-    </form>
+    <div class="addData">
+        <h1>Load Successful</h1>
+        <h2>Add Product to Database</h2>
+        <form action="/addProduct" method="post">
+            <input type="text" name="name" placeholder="Product Name">
+            <input type="text" name="price" placeholder="Product Price">
+            <input type="text" name="quantity" placeholder="Product Quantity">
+            <button type="submit">Add Product</button>
+        </form>
+    </div>
 
     <!-- Show data form database -->
     <div id="product"></div>
@@ -46,20 +88,20 @@
             fetch(`/delete/${id}`, {
                 method: 'DELETE',
             })
-            .then(res => res.json())
-            .then(results => {
-                if(results){
-                    event.target.parentNode.style.display = 'none';
-                }
-            })
+                .then(res => res.json())
+                .then(results => {
+                    if (results) {
+                        event.target.parentNode.style.display = 'none';
+                    }
+                })
         }
         // Function For Update Product
         function loadProductForUpdate(id) {
             fetch(`/product/${id}`)
-            .then(res => res.json())
-            .then(product => {
-                const update = document.getElementById('update');
-                update.innerHTML = `
+                .then(res => res.json())
+                .then(product => {
+                    const update = document.getElementById('update');
+                    update.innerHTML = `
                     <h3>Update: ${product.name}<sup>${product._id}</sup></h3>
                     <label for="price">Price</label><br/>
                     <input type="text" value="${product.price}" id="price"/><br/>
@@ -67,24 +109,24 @@
                     <input type="text" value="${product.quantity}" id="quantity"/><br/>
                     <button onclick="updateProduct('${product._id}')">Change</button>
                 `;
-            })
+                })
         }
-        function updateProduct(id){
+        function updateProduct(id) {
             const price = document.getElementById('price').value;
             const quantity = document.getElementById('quantity').value;
-            const product = {id, price, quantity};
+            const product = { id, price, quantity };
             console.log(product);
             fetch(`/update/${id}`, {
                 method: 'PATCH',
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(product)
             })
-            .then(res => res.json())
-            .then(result => {
-                if(result){
-                    loadProducts();
-                }
-            })
+                .then(res => res.json())
+                .then(result => {
+                    if (result) {
+                        loadProducts();
+                    }
+                })
         }
     </script>
 </body>
