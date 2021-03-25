@@ -28,21 +28,21 @@ client.connect(err => {
                 console.log('Product added successfully');
                 res.redirect('/')
             })
-    })
+    });
     // Read data from database - CRUD => R (Read)
     app.get('/products', (req, res) => {
         collection.find({})
             .toArray((err, doc) => {
                 res.send(doc)
             })
-    })
+    });
     // Call single data for update form database - CRUD => U (Update)
     app.get('/product/:id', (req, res) => {
         collection.find({ _id: ObjectId(req.params.id) })
             .toArray((err, doc) => {
                 res.send(doc[0]);
             })
-    })
+    });
     // Update data and send again to database - CRUD => U (Update)
     app.patch('/update/:id', (req, res) => {
         collection.updateOne({ _id: ObjectId(req.params.id) },
@@ -50,16 +50,16 @@ client.connect(err => {
                 $set: { price: req.body.price, quantity: req.body.quantity }
             })
             .then(result => {
-                console.log(result);
+                res.send(result.modifiedCount > 0);
             })
-    })
+    });
     // Delete data from database - CRUD => D (Delete)
     app.delete('/delete/:id', (req, res) => {
         collection.deleteOne({ _id: ObjectId(req.params.id) })
             .then(result => {
-                console.log(result)
+                res.send(result.deletedCount > 0);
             })
-    })
+    });
 
     // Check Database Connected or Not Connected
     console.log('Database Connected')
